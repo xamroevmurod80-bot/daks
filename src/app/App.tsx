@@ -123,7 +123,7 @@ function Sidebar({ page, setPage, user, onLogout, open, setOpen, badge }: { page
   return <>
     <AnimatePresence>{open && <motion.div className="fixed inset-0 bg-black/60 z-40 lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setOpen(false)} />}</AnimatePresence>
     <aside className={cn("fixed top-0 left-0 h-full w-64 bg-card border-r border-white/7 z-50 flex flex-col transition-transform duration-300 lg:translate-x-0", open ? "translate-x-0" : "-translate-x-full")}>
-      <div className="px-5 py-4 border-b border-white/7 flex-shrink-0"><div className="flex items-center gap-2.5"><div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center"><Zap className="w-4 h-4 text-primary" /></div><div><div className="text-sm font-bold text-foreground" style={{ fontFamily: "Outfit,sans-serif" }}>DaksDrive</div><div className="text-xs text-muted-foreground">Training Platform</div></div></div></div>
+      <div className="px-5 py-4 border-b border-white/7 flex-shrink-0"><div className="flex items-center gap-2.5"><div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center"><Zap className="w-4 h-4 text-primary" /></div><div><div className="text-sm font-bold text-foreground" style={{ fontFamily: "Outfit,sans-serif" }}>DaksDrive</div><div className="text-xs text-muted-foreground">Платформа обучения!</div></div></div></div>
       <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-0.5">
         {NAV.map(({ id, label, icon: Icon }) => <button key={id} onClick={() => { setPage(id as Page); setOpen(false); }} className={cn("w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all", page === id ? "bg-primary/15 text-primary border border-primary/20" : "text-muted-foreground hover:text-foreground hover:bg-white/5")}><Icon className="w-4 h-4 flex-shrink-0" /><span className="font-medium">{label}</span></button>)}
         {user.role === "admin" && <button onClick={() => { setPage("admin"); setOpen(false); }} className={cn("relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all mt-2 border", page === "admin" ? "bg-yellow-400/15 text-yellow-400 border-yellow-400/25" : "text-yellow-400/80 hover:text-yellow-400 hover:bg-yellow-400/8 border-yellow-400/15")}><Settings className="w-4 h-4" /><span className="font-medium">Администратор</span>{badge > 0 && <span className="absolute top-1.5 right-2 w-4 h-4 bg-destructive rounded-full text-white text-[10px] flex items-center justify-center font-bold">{badge}</span>}</button>}
@@ -172,7 +172,7 @@ function AuthPage({ mode, onAuth, switchMode }: { mode: "login" | "register"; on
   }
   return <div className="min-h-screen bg-background flex items-center justify-center p-4"><div className="absolute inset-0 overflow-hidden pointer-events-none"><div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/8 rounded-full blur-3xl" /><div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/8 rounded-full blur-3xl" /></div>
     <motion.div className="w-full max-w-md" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}>
-      <div className="text-center mb-8"><div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/20 border border-primary/30 mb-4"><Zap className="w-6 h-6 text-primary" /></div><h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: "Outfit,sans-serif" }}>{mode === "login" ? "Вход в систему" : "Регистрация"}</h1><p className="text-sm text-muted-foreground mt-1">DaksDrive & iMoped Training Platform</p></div>
+      <div className="text-center mb-8"><div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/20 border border-primary/30 mb-4"><Zap className="w-6 h-6 text-primary" /></div><h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: "Outfit,sans-serif" }}>{mode === "login" ? "Вход в систему" : "Регистрация"}</h1><p className="text-sm text-muted-foreground mt-1">DaksDrive & iMoped Платформа обучения!</p></div>
       <GC className="p-6"><form onSubmit={submit} className="space-y-4">
         {mode === "register" && <><div className="grid grid-cols-2 gap-3"><Inp label="Имя *" placeholder="Алексей" value={form.firstName} onChange={f("firstName")} /><Inp label="Фамилия" placeholder="Петров" value={form.lastName} onChange={f("lastName")} /></div><Inp label="Телефон" type="tel" placeholder="+998 90 000-00-00" value={form.phone} onChange={f("phone")} /></>}
         <Inp label="Email *" type="email" placeholder="email@daksdrive.uz" value={form.email} onChange={f("email")} />
@@ -182,7 +182,7 @@ function AuthPage({ mode, onAuth, switchMode }: { mode: "login" | "register"; on
         <Btn type="submit" className="w-full justify-center" disabled={loading}>{loading ? "..." : mode === "login" ? "Войти" : "Создать аккаунт"}</Btn>
       </form>
         <div className="mt-4 pt-4 border-t border-white/7 text-center text-sm text-muted-foreground">{mode === "login" ? "Нет аккаунта?" : "Есть аккаунт?"}{" "}<button onClick={switchMode} className="text-primary hover:underline font-medium">{mode === "login" ? "Зарегистрироваться" : "Войти"}</button></div>
-        {mode === "login" && <div className="mt-3 p-3 rounded-lg bg-white/3 border border-white/7 text-xs text-muted-foreground font-mono space-y-0.5"><div className="text-foreground/50 mb-1">Firebase Auth:</div><div>Admin: admin@daksdrive.uz</div><div>User: a.petrov@daksdrive.uz</div><div className="text-foreground/40 mt-1">Сначала создайте пользователя в Firebase (README)</div></div>}
+        {/* {mode === "login" && <div className="mt-3 p-3 rounded-lg bg-white/3 border border-white/7 text-xs text-muted-foreground font-mono space-y-0.5"><div className="text-foreground/50 mb-1">Firebase Auth:</div><div>Admin: admin@daksdrive.uz</div><div>User: a.petrov@daksdrive.uz</div><div className="text-foreground/40 mt-1">Сначала создайте пользователя в Firebase (README)</div></div>} */}
       </GC>
     </motion.div>
   </div>;
@@ -849,7 +849,7 @@ export default function App() {
           </motion.div>
         </AnimatePresence>
       </main>
-      <footer className="border-t border-white/7 px-6 py-4 text-center text-xs text-muted-foreground">© 2026 DaksDrive Platform — Created by muroddillo kxamroev</footer>
+      <footer className="border-t border-white/7 px-6 py-4 text-center text-xs text-muted-foreground">© 2026 DaksDrive Platform — Created by Muroddillo Kxamroev</footer>
     </div>
   </div>;
 }

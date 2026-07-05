@@ -71,7 +71,7 @@ export async function uploadProfilePhotoBase64(
 export async function uploadTrainingVideo(file: File): Promise<ApiResult<string>> {
   const bucket = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
   if (!bucket || bucket.includes("your_project")) {
-    return { data: null, error: "Storage не настроен: укажите VITE_FIREBASE_STORAGE_BUCKET в .env.local" };
+    return { data: null, error: "Storage не настроен: укажите VITE_FIREBASE_STORAGE_BUCKET в .env" };
   }
   if (file.size > VIDEO_MAX_MB * 1024 * 1024) {
     return { data: null, error: `Файл слишком большой (макс. ${VIDEO_MAX_MB} МБ). Вставьте ссылку на YouTube или облако.` };
@@ -96,7 +96,7 @@ const CALL_AUDIO_MAX_MB = 25;
 export async function uploadCallRecording(file: File): Promise<ApiResult<{ path: string; url: string }>> {
   const bucket = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
   if (!bucket || bucket.includes("your_project")) {
-    return { data: null, error: "Storage не настроен: укажите VITE_FIREBASE_STORAGE_BUCKET в .env.local" };
+    return { data: null, error: "Storage не настроен: укажите VITE_FIREBASE_STORAGE_BUCKET в .env" };
   }
   if (file.size > CALL_AUDIO_MAX_MB * 1024 * 1024) {
     return { data: null, error: `Аудио слишком большое (макс. ${CALL_AUDIO_MAX_MB} МБ)` };
