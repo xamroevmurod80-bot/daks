@@ -6,6 +6,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
+    "preview": "vite preview",
     "firebase:login": "firebase login",
     "firebase:rules": "firebase deploy --only firestore:rules,firestore:indexes",
     "firebase:rules:firestore": "firebase deploy --only firestore:rules,firestore:indexes",
