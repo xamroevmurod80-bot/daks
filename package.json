@@ -5,7 +5,15 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite"
+    "dev": "vite",
+    "firebase:login": "firebase login",
+    "firebase:rules": "firebase deploy --only firestore:rules,firestore:indexes",
+    "firebase:rules:firestore": "firebase deploy --only firestore:rules,firestore:indexes",
+    "firebase:rules:all": "firebase deploy --only firestore:rules,storage:rules,firestore:indexes",
+    "firebase:rules:storage": "firebase deploy --only storage:rules",
+    "firebase:deploy:functions": "firebase deploy --only functions",
+    "firebase:deploy:all": "firebase deploy --only firestore:rules,storage:rules,firestore:indexes,functions",
+    "firebase:secret:gemini": "firebase functions:secrets:set GEMINI_API_KEY"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -39,20 +47,22 @@
     "@radix-ui/react-toggle": "1.1.2",
     "@radix-ui/react-toggle-group": "1.1.2",
     "@radix-ui/react-tooltip": "1.1.8",
-    "@supabase/supabase-js": "^2.110.0",
     "canvas-confetti": "1.9.4",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cmdk": "1.1.1",
     "date-fns": "3.6.0",
     "embla-carousel-react": "8.6.0",
+    "firebase": "^11.6.0",
     "input-otp": "1.4.2",
     "lucide-react": "0.487.0",
     "motion": "12.23.24",
     "next-themes": "0.4.6",
+    "react": "18.3.1",
     "react-day-picker": "8.10.1",
     "react-dnd": "16.0.1",
     "react-dnd-html5-backend": "16.0.1",
+    "react-dom": "18.3.1",
     "react-hook-form": "7.55.0",
     "react-popper": "2.3.0",
     "react-resizable-panels": "2.1.7",
@@ -67,21 +77,13 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.1.12",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
     "@vitejs/plugin-react": "4.7.0",
+    "firebase-tools": "^15.22.4",
     "tailwindcss": "4.1.12",
+    "typescript": "^5.7.0",
     "vite": "6.3.5"
-  },
-  "peerDependencies": {
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": true
-    },
-    "react-dom": {
-      "optional": true
-    }
   },
   "pnpm": {
     "overrides": {

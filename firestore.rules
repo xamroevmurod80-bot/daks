@@ -1,0 +1,108 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.admin == true ||
+        get(/databases/$(database)/documents/profiles/$(request.auth.uid)).data.role == 'admin'
+      );
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function notYetSeeded() {
+      return !exists(/databases/$(database)/documents/_meta/seed);
+    }
+
+    function canBootstrapContent() {
+      return isSignedIn() && notYetSeeded();
+    }
+
+    match /profiles/{uid} {
+      allow read: if isSignedIn();
+      allow create: if isOwner(uid) || isAdmin();
+      allow update: if isAdmin() || (
+        isOwner(uid) &&
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['progress', 'photoUrl', 'phone', 'firstName', 'lastName', 'updatedAt'])
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /kb_items/{id} {
+      allow read: if isSignedIn();
+      allow create: if isAdmin() || canBootstrapContent();
+      allow update, delete: if isAdmin();
+    }
+
+    match /scripts/{id} {
+      allow read: if isSignedIn();
+      allow create: if isAdmin() || canBootstrapContent();
+      allow update, delete: if isAdmin();
+    }
+
+    match /test_questions/{id} {
+      allow read: if isSignedIn();
+      allow create: if isAdmin() || canBootstrapContent();
+      allow update, delete: if isAdmin();
+    }
+
+    match /news/{id} {
+      allow read: if isSignedIn();
+      allow create: if isAdmin() || (
+        isSignedIn() &&
+        request.resource.data.authorId == request.auth.uid
+      );
+      allow update, delete: if isAdmin();
+    }
+
+    match /help_requests/{id} {
+      allow read: if isAdmin() || (isSignedIn() && resource.data.submittedBy == request.auth.uid);
+      allow create: if isSignedIn() &&
+        request.resource.data.submittedBy == request.auth.uid &&
+        request.resource.data.status == 'new';
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /_meta/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || canBootstrapContent();
+    }
+
+    match /site_content/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || canBootstrapContent();
+    }
+
+    match /departments/{id} {
+      allow read: if isSignedIn();
+      allow create: if isAdmin() || canBootstrapContent();
+      allow update, delete: if isAdmin();
+    }
+
+    match /locations/{id} {
+      allow read: if isSignedIn();
+      allow create: if isAdmin() || canBootstrapContent();
+      allow update, delete: if isAdmin();
+    }
+
+    match /training_videos/{id} {
+      allow read: if isSignedIn();
+      allow create: if isAdmin() || canBootstrapContent();
+      allow update, delete: if isAdmin();
+    }
+
+    match /ai_analyses/{id} {
+      allow read: if isAdmin();
+      allow create: if isAdmin() || canBootstrapContent();
+      allow update, delete: if isAdmin();
+    }
+  }
+}
