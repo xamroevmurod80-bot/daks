@@ -68,9 +68,13 @@ export default defineConfig({
 
   assetsInclude: ['**/*.svg', '**/*.csv'],
 
-  // 👇 ВОТ ЭТО ДОБАВЬ
   preview: {
-    host: true, // важно!
-    port: process.env.PORT || 4173
+    host: true,
+    port: process.env.PORT || 4173,
+
+    // 👇 ВАЖНО
+    allowedHosts: [
+      'daks-yi7g.onrender.com'
+    ]
   }
 })
