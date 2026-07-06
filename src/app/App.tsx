@@ -116,7 +116,7 @@ function PhotoUpload({ value, onChange, uid }: { value: string; onChange: (b: st
 }
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
-const NAV = [{ id: "home", label: "Главная", icon: Home }, { id: "about", label: "О компании", icon: Info }, { id: "training", label: "Обучение", icon: BookOpen }, { id: "team", label: "Наша команда", icon: Users }, { id: "departments", label: "Отделы", icon: Building2 }, { id: "news", label: "Новости", icon: Newspaper }, { id: "kpi", label: "KPI Калькулятор", icon: Calculator }, { id: "certificates", label: "Сертификаты", icon: Award }, { id: "locations", label: "Локации", icon: MapPin }, { id: "contacts", label: "Контакты", icon: Phone }, { id: "help", label: "Нужна помощь?", icon: HelpCircle }];
+const NAV = [{ id: "home", label: "Главная", icon: Home }, { id: "about", label: "О компании", icon: Info }, { id: "training", label: "Обучение", icon: BookOpen }, { id: "team", label: "Наша команда", icon: Users }, { id: "news", label: "Новости", icon: Newspaper }, { id: "kpi", label: "KPI Калькулятор", icon: Calculator }, { id: "certificates", label: "Сертификаты", icon: Award }, { id: "locations", label: "Локации", icon: MapPin }, { id: "contacts", label: "Контакты", icon: Phone }, { id: "help", label: "Нужна помощь?", icon: HelpCircle }];
 
 function Sidebar({ page, setPage, user, onLogout, open, setOpen, badge }: { page: Page; setPage: (p: Page) => void; user: Employee; onLogout: () => void; open: boolean; setOpen: (v: boolean) => void; badge: number }) {
   const cat = CAT_MAP[user.department];
@@ -288,21 +288,6 @@ function TeamPage({ employees }: { employees: Employee[] }) {
   </motion.div>;
 }
 
-// ─── Departments ──────────────────────────────────────────────────────────────
-
-function DepartmentsPage({ departments }: { departments: Department[] }) {
-  const [sel, setSel] = useState<string | null>(null);
-  return <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
-    <div><h1 className="text-2xl font-bold text-foreground mb-1" style={{ fontFamily: "Outfit,sans-serif" }}>Отделы</h1><p className="text-muted-foreground text-sm">Нажмите на отдел для подробной информации</p></div>
-    <div className="space-y-3">{departments.map(d => { const Icon = getIcon(d.iconKey); return <GC key={d.id} className="p-5 cursor-pointer hover:border-white/20 transition-all" onClick={() => setSel(sel === d.id ? null : d.id)}>
-      <div className="flex items-start gap-4"><div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: d.color + "22" }}><Icon className="w-5 h-5" style={{ color: d.color }} /></div>
-        <div className="flex-1 min-w-0"><div className="flex items-center justify-between gap-2"><div className="flex items-center gap-2 flex-wrap"><h3 className="font-bold text-foreground" style={{ fontFamily: "Outfit,sans-serif" }}>{d.name}</h3><Badge color={d.color}>{d.headcount} чел.</Badge></div><ChevronDown className={cn("w-4 h-4 text-muted-foreground flex-shrink-0 transition-transform duration-200", sel === d.id && "rotate-180")} /></div>
-          <p className="text-muted-foreground text-sm mt-1 leading-relaxed">{d.description}</p>
-          <div className="flex flex-wrap gap-2 mt-3">{d.kpis.map(k => <span key={k} className="text-xs px-2 py-1 rounded-md border border-white/8 bg-white/3 text-muted-foreground font-mono">{k}</span>)}</div></div></div>
-      <AnimatePresence>{sel === d.id && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden"><div className="mt-4 pt-4 border-t border-white/7 text-sm text-muted-foreground leading-relaxed">{d.detail}</div></motion.div>}</AnimatePresence>
-    </GC>; })}</div>
-  </motion.div>;
-}
 
 // ─── News ──────────────────────────────────────────────────────────────────────
 function NewsPage({ news, employees }: { news: NewsItem[]; employees: Employee[] }) {
@@ -791,9 +776,7 @@ export default function App() {
       case "home": return <HomePage user={currentUser} setPage={setPage} />;
       case "about": return <AboutPage content={aboutContent} />;
       case "training": return <TrainingPage user={currentUser} setUser={updateUser} kbItems={kbItems} scriptItems={scriptItems} testQs={testQs} trainingVideos={trainingVideos} />;
-      // case "knowledge": return <KnowledgePage items={kbItems} />;
       case "team": return <TeamPage employees={employees} />;
-      case "departments": return <DepartmentsPage departments={departments} />;
       case "news": return <NewsPage news={news} employees={employees} />;
       case "kpi": return <KpiPage />;
       case "certificates": return <CertificatesPage user={currentUser} />;
