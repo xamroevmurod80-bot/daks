@@ -116,7 +116,7 @@ function PhotoUpload({ value, onChange, uid }: { value: string; onChange: (b: st
 }
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
-const NAV = [{ id: "home", label: "Главная", icon: Home }, { id: "about", label: "О компании", icon: Info }, { id: "training", label: "Обучение", icon: BookOpen }, { id: "knowledge", label: "База знаний", icon: Layers }, { id: "scripts", label: "Скрипты", icon: FileText }, { id: "team", label: "Наша команда", icon: Users }, { id: "departments", label: "Отделы", icon: Building2 }, { id: "news", label: "Новости", icon: Newspaper }, { id: "kpi", label: "KPI Калькулятор", icon: Calculator }, { id: "certificates", label: "Сертификаты", icon: Award }, { id: "locations", label: "Локации", icon: MapPin }, { id: "contacts", label: "Контакты", icon: Phone }, { id: "help", label: "Нужна помощь?", icon: HelpCircle }];
+const NAV = [{ id: "home", label: "Главная", icon: Home }, { id: "about", label: "О компании", icon: Info }, { id: "training", label: "Обучение", icon: BookOpen }, { id: "team", label: "Наша команда", icon: Users }, { id: "departments", label: "Отделы", icon: Building2 }, { id: "news", label: "Новости", icon: Newspaper }, { id: "kpi", label: "KPI Калькулятор", icon: Calculator }, { id: "certificates", label: "Сертификаты", icon: Award }, { id: "locations", label: "Локации", icon: MapPin }, { id: "contacts", label: "Контакты", icon: Phone }, { id: "help", label: "Нужна помощь?", icon: HelpCircle }];
 
 function Sidebar({ page, setPage, user, onLogout, open, setOpen, badge }: { page: Page; setPage: (p: Page) => void; user: Employee; onLogout: () => void; open: boolean; setOpen: (v: boolean) => void; badge: number }) {
   const cat = CAT_MAP[user.department];
@@ -182,7 +182,7 @@ function AuthPage({ mode, onAuth, switchMode }: { mode: "login" | "register"; on
         <Btn type="submit" className="w-full justify-center" disabled={loading}>{loading ? "..." : mode === "login" ? "Войти" : "Создать аккаунт"}</Btn>
       </form>
         <div className="mt-4 pt-4 border-t border-white/7 text-center text-sm text-muted-foreground">{mode === "login" ? "Нет аккаунта?" : "Есть аккаунт?"}{" "}<button onClick={switchMode} className="text-primary hover:underline font-medium">{mode === "login" ? "Зарегистрироваться" : "Войти"}</button></div>
-        {/* {mode === "login" && <div className="mt-3 p-3 rounded-lg bg-white/3 border border-white/7 text-xs text-muted-foreground font-mono space-y-0.5"><div className="text-foreground/50 mb-1">Firebase Auth:</div><div>Admin: admin@daksdrive.uz</div><div>User: a.petrov@daksdrive.uz</div><div className="text-foreground/40 mt-1">Сначала создайте пользователя в Firebase (README)</div></div>} */}
+        {mode === "login" && <div className="mt-3 p-3 rounded-lg bg-white/3 border border-white/7 text-xs text-muted-foreground font-mono space-y-0.5"><div className="text-foreground/50 mb-1">Firebase Auth:</div><div>Admin: admin@daksdrive.uz</div><div>User: a.petrov@daksdrive.uz</div><div className="text-foreground/40 mt-1">Сначала создайте пользователя в Firebase (README)</div></div>}
       </GC>
     </motion.div>
   </div>;
@@ -259,29 +259,6 @@ function TrainingPage({ user, setUser, kbItems, scriptItems, testQs, trainingVid
       </motion.div>}
     </AnimatePresence>
     <AnimatePresence>{playingVideo?.videoUrl && <Modal title={playingVideo.title} onClose={() => setPlayingVideo(null)}><video controls autoPlay className="w-full rounded-lg bg-black" src={playingVideo.videoUrl} /></Modal>}</AnimatePresence>
-  </motion.div>;
-}
-
-// ─── Knowledge ────────────────────────────────────────────────────────────────
-function KnowledgePage({ items }: { items: KBItem[] }) {
-  const [search, setSearch] = useState(""), [cat, setCat] = useState("all");
-  const filtered = items.filter(k => (cat === "all" || k.category === cat) && (k.question.toLowerCase().includes(search.toLowerCase()) || k.answer.toLowerCase().includes(search.toLowerCase())));
-  return <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
-    <div><h1 className="text-2xl font-bold text-foreground mb-1" style={{ fontFamily: "Outfit,sans-serif" }}>База знаний</h1><p className="text-muted-foreground text-sm">Ответы по всем отделам</p></div>
-    <div className="flex flex-wrap gap-3"><div className="relative flex-1 min-w-48"><Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" /><input className="w-full pl-9 pr-4 py-2.5 rounded-lg border border-white/8 bg-white/5 text-foreground text-sm placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-primary/50" placeholder="Поиск..." value={search} onChange={e => setSearch(e.target.value)} /></div>
-      <div className="flex gap-2 flex-wrap"><button onClick={() => setCat("all")} className={cn("px-3 py-1.5 rounded-lg text-sm border transition-all", cat === "all" ? "bg-primary/15 text-primary border-primary/30" : "border-white/8 text-muted-foreground hover:border-white/20")}>Все</button>{CATS.map(c => <button key={c.id} onClick={() => setCat(c.id)} className="px-3 py-1.5 rounded-lg text-sm border transition-all" style={cat === c.id ? { background: c.color + "22", borderColor: c.color + "55", color: c.color } : { borderColor: "rgba(255,255,255,0.08)", color: "#6b7a99" }}>{c.label}</button>)}</div></div>
-    <div className="space-y-3">{filtered.length === 0 ? <GC className="p-10 text-center text-muted-foreground text-sm">Ничего не найдено</GC> : filtered.map(item => { const c = CAT_MAP[item.category]; return <div key={item.id}>{c && <div className="mb-1 px-1"><Badge color={c.color}>{c.label}</Badge></div>}<Acc q={item.question} a={item.answer} /></div>; })}</div>
-  </motion.div>;
-}
-
-// ─── Scripts ──────────────────────────────────────────────────────────────────
-function ScriptsPage({ items }: { items: ScriptItem[] }) {
-  const [cat, setCat] = useState("all");
-  const filtered = items.filter(s => cat === "all" || s.category === cat);
-  return <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
-    <div><h1 className="text-2xl font-bold text-foreground mb-1" style={{ fontFamily: "Outfit,sans-serif" }}>Скрипты</h1><p className="text-muted-foreground text-sm">Речевые шаблоны по отделам</p></div>
-    <div className="flex gap-2 flex-wrap"><button onClick={() => setCat("all")} className={cn("px-3 py-1.5 rounded-lg text-sm border transition-all", cat === "all" ? "bg-primary/15 text-primary border-primary/30" : "border-white/8 text-muted-foreground hover:border-white/20")}>Все</button>{CATS.map(c => <button key={c.id} onClick={() => setCat(c.id)} className="px-3 py-1.5 rounded-lg text-sm border transition-all" style={cat === c.id ? { background: c.color + "22", borderColor: c.color + "55", color: c.color } : { borderColor: "rgba(255,255,255,0.08)", color: "#6b7a99" }}>{c.label}</button>)}</div>
-    <div className="space-y-4">{filtered.length === 0 ? <GC className="p-10 text-center text-muted-foreground text-sm">Скрипты не найдены</GC> : filtered.map(s => { const c = CAT_MAP[s.category]!; return <GC key={s.id} className="p-5"><div className="flex items-center gap-2 mb-3"><Badge color={c.color}>{c.label}</Badge><h3 className="font-semibold text-foreground text-sm">{s.title}</h3></div><pre className="text-muted-foreground text-xs whitespace-pre-wrap font-mono leading-relaxed bg-white/3 p-4 rounded-lg border border-white/7">{s.content}</pre></GC>; })}</div>
   </motion.div>;
 }
 
@@ -551,6 +528,7 @@ function AdminPage({ employees, setEmployees, helpReqs, setHelpReqs, news, setNe
     if (res.error) { toast.error(res.error); return; }
     setHelpReqs(p => p.map(x => x.id === id ? { ...x, status } : x));
   };
+  
 
 
   return <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
@@ -813,8 +791,7 @@ export default function App() {
       case "home": return <HomePage user={currentUser} setPage={setPage} />;
       case "about": return <AboutPage content={aboutContent} />;
       case "training": return <TrainingPage user={currentUser} setUser={updateUser} kbItems={kbItems} scriptItems={scriptItems} testQs={testQs} trainingVideos={trainingVideos} />;
-      case "knowledge": return <KnowledgePage items={kbItems} />;
-      case "scripts": return <ScriptsPage items={scriptItems} />;
+      // case "knowledge": return <KnowledgePage items={kbItems} />;
       case "team": return <TeamPage employees={employees} />;
       case "departments": return <DepartmentsPage departments={departments} />;
       case "news": return <NewsPage news={news} employees={employees} />;
@@ -853,3 +830,4 @@ export default function App() {
     </div>
   </div>;
 }
+
