@@ -849,7 +849,7 @@ export default function App() {
           </motion.div>
         </AnimatePresence>
       </main>
-      <footer className="border-t border-white/7 px-6 py-4 text-center text-xs text-muted-foreground">© 2026 DaksDrive Platform — Created by Muroddillo Kxamroev2</footer>
+      <footer className="border-t border-white/7 px-6 py-4 text-center text-xs text-muted-foreground">© 2026 DaksDrive Platform — Created by Muroddillo Kxamroev</footer>
     </div>
   </div>;
 }
